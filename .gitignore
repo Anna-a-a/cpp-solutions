@@ -1,0 +1,26 @@
+# C++ build artifacts
+*.o
+*.out
+*.exe
+*.obj
+*.dll
+*.so
+*.dylib
+
+# IDE specific files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Build directories
+build/
+bin/
+obj/
+Debug/
+Release/
+
+# OS specific files
+.DS_Store
+Thumbs.db 

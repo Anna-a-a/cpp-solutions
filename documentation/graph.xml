@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentation>
+    <file name="solutions/graph/optimized_solution.cpp">
+        <description>
+            Оптимизированная реализация калькулятора степеней графа.
+            Объединяет лучшие аспекты решений DeepSeek и GPT-4o.
+        </description>
+        
+        <code-blocks>
+            <block name="GraphError">
+                <description>
+                    Класс исключения для обработки ошибок в работе с графом.
+                    Взято из решения DeepSeek для улучшения обработки ошибок.
+                </description>
+                <optimization>
+                    Наследуется от std::runtime_error для стандартизации обработки исключений.
+                </optimization>
+            </block>
+            
+            <block name="Graph">
+                <description>
+                    Основной класс для работы с графом.
+                    Объединяет функциональность из обоих решений.
+                </description>
+                
+                <block name="validateMatrix">
+                    <description>
+                        Проверяет корректность матрицы смежности.
+                        Взято из решения DeepSeek.
+                    </description>
+                    <optimization>
+                        Добавлены подробные проверки:
+                        - Пустая матрица
+                        - Несимметричная матрица
+                        - Ненулевые элементы на диагонали
+                        - Значения, отличные от 0 и 1
+                        Каждая проверка генерирует информативное сообщение об ошибке.
+                    </optimization>
+                </block>
+                
+                <block name="readFromFile">
+                    <description>
+                        Читает граф из файла.
+                        Взято из решения DeepSeek.
+                    </description>
+                    <optimization>
+                        Добавлена проверка количества вершин (от 1 до 100).
+                        Улучшена обработка ошибок при чтении файла и матрицы.
+                    </optimization>
+                </block>
+                
+                <block name="calculateDegrees">
+                    <description>
+                        Вычисляет степени всех вершин графа.
+                        Взято из решения GPT-4o.
+                    </description>
+                    <optimization>
+                        Использует std::count для подсчета единиц в строке матрицы,
+                        что делает код более компактным и эффективным.
+                    </optimization>
+                </block>
+                
+                <block name="writeResults">
+                    <description>
+                        Записывает результаты в файл.
+                        Взято из решения DeepSeek.
+                    </description>
+                    <optimization>
+                        Добавлен вывод максимальной и минимальной степени вершин.
+                        Использует std::minmax_element для эффективного поиска.
+                    </optimization>
+                </block>
+            </block>
+            
+            <block name="main">
+                <description>
+                    Основная функция программы.
+                    Взято из решения DeepSeek.
+                </description>
+                <optimization>
+                    Улучшена обработка ошибок с использованием try-catch.
+                    Код стал более компактным и читаемым.
+                </optimization>
+            </block>
+        </code-blocks>
+    </file>
+</documentation> 

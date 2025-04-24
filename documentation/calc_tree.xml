@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<documentation>
+    <file name="solutions/calc_tree/optimized_solution.cpp">
+        <description>
+            Оптимизированная реализация калькулятора выражений.
+            Объединяет лучшие аспекты решений DeepSeek и GPT-4o.
+        </description>
+        
+        <class name="ExpressionError">
+            <description>
+                Класс исключения для обработки ошибок в выражениях.
+                Взято из решения DeepSeek для улучшения обработки ошибок.
+            </description>
+            <optimization>
+                Наследуется от std::runtime_error для стандартизации обработки исключений.
+            </optimization>
+            <constructor>
+                <param name="msg">Сообщение об ошибке</param>
+                <description>Создает новый объект исключения с указанным сообщением</description>
+            </constructor>
+        </class>
+
+        <class name="TreeNode">
+            <description>
+                Класс для представления узла в дереве выражений.
+                Взято из решения DeepSeek.
+            </description>
+            <optimization>
+                Использует умные указатели (std::shared_ptr) для автоматического управления памятью,
+                что предотвращает утечки памяти и упрощает код.
+            </optimization>
+            <members>
+                <member name="value">
+                    <type>std::string</type>
+                    <description>Значение узла (оператор или операнд)</description>
+                </member>
+                <member name="left">
+                    <type>std::shared_ptr&lt;TreeNode&gt;</type>
+                    <description>Левый потомок узла</description>
+                </member>
+                <member name="right">
+                    <type>std::shared_ptr&lt;TreeNode&gt;</type>
+                    <description>Правый потомок узла</description>
+                </member>
+            </members>
+            <constructor>
+                <param name="val">Значение узла</param>
+                <description>Создает новый узел с указанным значением</description>
+            </constructor>
+        </class>
+
+        <class name="ExpressionTree">
+            <description>
+                Основной класс для работы с деревом выражений.
+                Объединяет функциональность из обоих решений.
+            </description>
+            <private-methods>
+                <method name="getPriority">
+                    <description>
+                        Определяет приоритет оператора.
+                        Взято из решения DeepSeek.
+                    </description>
+                    <optimization>
+                        Увеличен приоритет степени (^) до 4, что соответствует математическим правилам.
+                    </optimization>
+                    <param name="op">Оператор для проверки</param>
+                    <return>Числовое значение приоритета</return>
+                </method>
+                <method name="isOperator">
+                    <description>Проверяет, является ли строка оператором</description>
+                    <param name="c">Строка для проверки</param>
+                    <return>true если строка является оператором, false в противном случае</return>
+                </method>
+                <method name="isValidNumber">
+                    <description>
+                        Проверяет, является ли строка допустимым числом.
+                        Взято из решения DeepSeek.
+                    </description>
+                    <optimization>
+                        Добавлена проверка диапазона (от 1 до 30) для предотвращения переполнения.
+                    </optimization>
+                    <param name="num">Строка для проверки</param>
+                    <return>true если строка является допустимым числом, false в противном случае</return>
+                </method>
+                <method name="tokenize">
+                    <description>
+                        Разбивает выражение на токены.
+                        Взято из решения DeepSeek.
+                    </description>
+                    <optimization>
+                        Улучшена проверка токенов с использованием функций isOperator и isValidNumber.
+                    </optimization>
+                    <param name="expr">Входное выражение</param>
+                    <return>Вектор токенов</return>
+                    <throws>ExpressionError при обнаружении недопустимых токенов</throws>
+                </method>
+                <method name="buildTreeFromTokens">
+                    <description>
+                        Строит дерево выражения из токенов.
+                        Взято из решения GPT-4o.
+                    </description>
+                    <optimization>
+                        Использует лямбда-функцию для применения операторов, что делает код более компактным.
+                    </optimization>
+                    <param name="tokens">Вектор токенов</param>
+                    <return>Указатель на корень построенного дерева</return>
+                </method>
+                <method name="evaluateNode">
+                    <description>
+                        Вычисляет значение поддерева с корнем в данном узле.
+                        Взято из решения DeepSeek.
+                    </description>
+                    <optimization>
+                        Добавлена проверка деления на ноль и остатка от деления на ноль.
+                        Улучшена обработка ошибок с информативными сообщениями.
+                    </optimization>
+                    <param name="node">Узел для вычисления</param>
+                    <param name="x">Значение переменной x</param>
+                    <return>Результат вычисления</return>
+                    <throws>ExpressionError при делении на ноль или неизвестном операторе</throws>
+                </method>
+                <method name="transformNode">
+                    <description>
+                        Преобразует поддерево по правилу x*A → A*x.
+                        Взято из решения DeepSeek.
+                    </description>
+                    <optimization>
+                        Использует рекурсивный подход для обхода всего дерева.
+                    </optimization>
+                    <param name="node">Узел для преобразования</param>
+                </method>
+                <method name="printNode">
+                    <description>
+                        Печатает поддерево в текстовом виде.
+                        Взято из решения DeepSeek.
+                    </description>
+                    <optimization>
+                        Использует отступы для визуального представления структуры дерева.
+                    </optimization>
+                    <param name="node">Узел для печати</param>
+                    <param name="depth">Глубина узла</param>
+                    <param name="out">Поток вывода</param>
+                </method>
+            </private-methods>
+            <public-methods>
+                <method name="buildFromExpression">
+                    <description>Строит дерево из строкового выражения</description>
+                    <param name="expr">Входное выражение</param>
+                    <throws>ExpressionError при некорректном выражении</throws>
+                </method>
+                <method name="evaluate">
+                    <description>Вычисляет значение выражения</description>
+                    <param name="x">Значение переменной x</param>
+                    <return>Результат вычисления</return>
+                    <throws>ExpressionError при пустом дереве или ошибке вычисления</throws>
+                </method>
+                <method name="transform">
+                    <description>Преобразует дерево по правилу x*A → A*x</description>
+                    <throws>ExpressionError при пустом дереве</throws>
+                </method>
+                <method name="print">
+                    <description>Печатает дерево в текстовом виде</description>
+                    <param name="out">Поток вывода</param>
+                    <throws>ExpressionError при пустом дереве</throws>
+                </method>
+            </public-methods>
+        </class>
+
+        <function name="main">
+            <description>
+                Основная функция программы.
+                Читает выражение из файла FN1.txt, запрашивает значение x,
+                вычисляет результат и записывает его вместе с преобразованным
+                деревом в файл FN2.txt.
+            </description>
+            <optimization>
+                Улучшена обработка ошибок с использованием try-catch.
+                Добавлена проверка открытия файлов.
+            </optimization>
+            <return>0 при успешном выполнении, 1 при ошибке</return>
+            <throws>
+                Обрабатывает все исключения и выводит сообщения об ошибках
+            </throws>
+        </function>
+    </file>
+</documentation> 
